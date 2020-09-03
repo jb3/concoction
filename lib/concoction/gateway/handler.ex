@@ -1,4 +1,7 @@
 defmodule Concoction.Gateway.Handler do
+  @moduledoc """
+  Handling events coming from Discord in a nicer, parsed fashion.
+  """
   use GenServer
 
   require Logger
@@ -62,8 +65,6 @@ defmodule Concoction.Gateway.Handler do
 
   def handle_event(payload = %Payload{op: 0, t: :READY}) do
     Logger.debug("READY payload received")
-
-    IO.inspect(payload.d)
   end
 
   def handle_event(payload) do

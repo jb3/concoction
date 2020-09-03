@@ -1,4 +1,7 @@
 defmodule Concoction do
+  @moduledoc """
+  Concoction is a Discord library for Elixir.
+  """
   use Application
 
   @impl true

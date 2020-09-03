@@ -1,8 +1,12 @@
 defmodule Concoction.Gateway.Connection do
+  @moduledoc """
+  Maintaining the connection to Discord and performing the first parsing of payloads before handing them down the chain.
+  """
   use GenServer
 
   require Logger
 
+  alias Concoction.API.Gateway
   alias Concoction.Gateway.Payload
 
   @doc """
@@ -11,7 +15,7 @@ defmodule Concoction.Gateway.Connection do
   @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
   def start_link(_state) do
     Logger.debug("Fetching gateway information and starting connenction to Gateway")
-    {:ok, websocket_url, _shards} = Concoction.API.Gateway.get_gateway_bot()
+    {:ok, websocket_url, _shards} = Gateway.get_gateway_bot()
 
     GenServer.start_link(
       __MODULE__,

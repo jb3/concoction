@@ -15,7 +15,7 @@ defmodule Concoction.HTTP do
   @doc """
   Initialize the tables required in ETS for the HTTP client. This storage handles information on ratelimit buckets.
   """
-  def init() do
+  def init do
     :ets.new(:buckets, [:set, :public, :named_table])
 
     :ok
@@ -80,6 +80,17 @@ defmodule Concoction.HTTP do
     {status, response.body}
   end
 
+  @spec calculate_ratelimit_remaining({String.t(), integer(), float()}) :: integer()
+  defp calculate_ratelimit_remaining(ratelimit) do
+    remaining = (Float.ceil(elem(ratelimit, 2)) - DateTime.to_unix(DateTime.utc_now())) |> trunc
+
+    if remaining <= 0 do
+      0
+    else
+      remaining * 1000
+    end
+  end
+
   @spec ratelimit_remaining(binary, [any]) :: integer()
   def ratelimit_remaining(url, params) do
     bucket = get_bucket(url, params)
@@ -90,13 +101,7 @@ defmodule Concoction.HTTP do
         case elem(ratelimit, 1) do
           # Quota used
           0 ->
-            remaining =
-              (Float.ceil(elem(ratelimit, 2)) - DateTime.to_unix(DateTime.utc_now())) |> trunc
-
-            cond do
-              remaining <= 0 -> 0
-              true -> remaining * 1000
-            end
+            calculate_ratelimit_remaining(ratelimit)
 
           _quota_left ->
             0
@@ -153,7 +158,7 @@ defmodule Concoction.HTTP do
   end
 
   @spec construct_client() :: Tesla.Client.t()
-  defp construct_client() do
+  defp construct_client do
     headers = [
       {"Authorization", "Bot " <> Application.fetch_env!(:concoction, :token)},
       {"User-Agent", "DiscordBot (https://github.com/jb3/concoction, #{@version})"}

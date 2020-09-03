@@ -1,4 +1,7 @@
 defmodule Concoction.Supervisor do
+  @moduledoc """
+  Managing the processes for Concoction.
+  """
   use Supervisor
 
   def start_link(opts) do

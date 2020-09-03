@@ -1,4 +1,7 @@
 defmodule Concoction.Gateway.Heartbeater do
+  @moduledoc """
+  Heartbeating with the Discord Gateway to prove we are alive.
+  """
   use GenServer
 
   alias Concoction.Gateway.Payload
