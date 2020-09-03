@@ -24,7 +24,7 @@ defmodule Concoction.MixProject do
 
   defp aliases do
     [
-      test: "test --no-start" #(2)
+      test: "test --no-start"
     ]
   end
 
