@@ -80,8 +80,8 @@ defmodule Concoction.HTTP do
     {status, response.body}
   end
 
-  @spec calculate_ratelimit_remaining({String.t(), integer(), float()}) :: integer()
-  defp calculate_ratelimit_remaining(ratelimit) do
+  @spec calculate_ratelimit_remaining_seconds({String.t(), integer(), float()}) :: integer()
+  defp calculate_ratelimit_remaining_seconds(ratelimit) do
     remaining = (Float.ceil(elem(ratelimit, 2)) - DateTime.to_unix(DateTime.utc_now())) |> trunc
 
     if remaining <= 0 do
@@ -101,7 +101,7 @@ defmodule Concoction.HTTP do
         case elem(ratelimit, 1) do
           # Quota used
           0 ->
-            calculate_ratelimit_remaining(ratelimit)
+            calculate_ratelimit_remaining_seconds(ratelimit)
 
           _quota_left ->
             0
