@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.22.2">
     <meta name="project" content="Concoction v0.1.0">
-    <title>Concoction.Gateway.Heartbeater — Concoction v0.1.0</title>
+    <title>Concoction.Gateway.Supervisor — Concoction v0.1.0</title>
     <link rel="stylesheet" href="dist/elixir-d678dad126d82ddc061f.css" />
-    <script src="dist/sidebar_items-70f8e4b1bd.js"></script>
+    <script src="dist/sidebar_items-bbc93f5868.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-0103364119015b97e56c.js"></script>
   </head>
@@ -67,15 +67,13 @@ Concoction      </a>
 
       <h1>
         <small class="app-vsn">Concoction v0.1.0</small>
-Concoction.Gateway.Heartbeater          <a href="https://github.com/jb3/concoction/blob/master/lib/concoction/gateway/heartbeater.ex#L1" title="View Source" class="view-source" rel="help">
+Concoction.Gateway.Supervisor          <a href="https://github.com/jb3/concoction/blob/master/lib/concoction/gateway/supervisor.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
       </h1>
 
 
-        <section id="moduledoc">
-<p>Heartbeating with the Discord Gateway to prove we are alive.</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -97,9 +95,8 @@ Concoction.Gateway.Heartbeater          <a href="https://github.com/jb3/concocti
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#start_link/1">start_link(heartbeat_interval)</a>
+    <a href="#start_link/1">start_link(opts)</a>
   </div>
-    <div class="summary-synopsis"><p>Start the heartbeater with the milliseconds and connection PID passed.</p></div>
 </div>
   </div>
         </section>
@@ -119,7 +116,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">child_spec(init_arg)</h1>
-      <a href="https://github.com/jb3/concoction/blob/master/lib/concoction/gateway/heartbeater.ex#L5" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/jb3/concoction/blob/master/lib/concoction/gateway/supervisor.ex#L2" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -135,20 +132,16 @@ Functions          </h1>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">start_link(heartbeat_interval)</h1>
-      <a href="https://github.com/jb3/concoction/blob/master/lib/concoction/gateway/heartbeater.ex#L15" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">start_link(opts)</h1>
+      <a href="https://github.com/jb3/concoction/blob/master/lib/concoction/gateway/supervisor.ex#L4" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
   </div>
 
   <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>start_link(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) :: :ignore | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()}</pre>
-      </div>
 
-<p>Start the heartbeater with the milliseconds and connection PID passed.</p>  </section>
+  </section>
 </section>
           </div>
         </section>

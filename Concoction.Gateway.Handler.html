@@ -8,7 +8,7 @@
     <meta name="project" content="Concoction v0.1.0">
     <title>Concoction.Gateway.Handler — Concoction v0.1.0</title>
     <link rel="stylesheet" href="dist/elixir-d678dad126d82ddc061f.css" />
-    <script src="dist/sidebar_items-70f8e4b1bd.js"></script>
+    <script src="dist/sidebar_items-bbc93f5868.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-0103364119015b97e56c.js"></script>
   </head>
@@ -97,13 +97,13 @@ Concoction.Gateway.Handler          <a href="https://github.com/jb3/concoction/b
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#handle_event/1">handle_event(payload)</a>
+    <a href="#handle_event/2">handle_event(payload, state)</a>
   </div>
     <div class="summary-synopsis"><p>Handle parsed gateway events from the Discord gateway.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#start_link/1">start_link(state)</a>
+    <a href="#start_link/1">start_link(shard_info)</a>
   </div>
 </div>
   </div>
@@ -134,14 +134,14 @@ Functions          </h1>
 
 <p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>  </section>
 </section>
-<section class="detail" id="handle_event/1">
+<section class="detail" id="handle_event/2">
   <div class="detail-header">
-    <a href="#handle_event/1" class="detail-link" title="Link to this function">
+    <a href="#handle_event/2" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">handle_event(payload)</h1>
-      <a href="https://github.com/jb3/concoction/blob/master/lib/concoction/gateway/handler.ex#L41" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">handle_event(payload, state)</h1>
+      <a href="https://github.com/jb3/concoction/blob/master/lib/concoction/gateway/handler.ex#L69" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -150,7 +150,7 @@ Functions          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>handle_event(<a href="Concoction.Gateway.Payload.html#t:t/0">Concoction.Gateway.Payload.t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
+          <pre>handle_event(<a href="Concoction.Gateway.Payload.html#t:t/0">Concoction.Gateway.Payload.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">tuple</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
       </div>
 
 <p>Handle parsed gateway events from the Discord gateway.</p>  </section>
@@ -161,14 +161,18 @@ Functions          </h1>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">start_link(state)</h1>
-      <a href="https://github.com/jb3/concoction/blob/master/lib/concoction/gateway/handler.ex#L11" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">start_link(shard_info)</h1>
+      <a href="https://github.com/jb3/concoction/blob/master/lib/concoction/gateway/handler.ex#L12" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
   </div>
 
   <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>start_link([<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()]) :: :ignore | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()}</pre>
+      </div>
 
   </section>
 </section>

@@ -1,11 +1,11 @@
-dist/search_items-98209ac8ab.js
+dist/search_items-81e56b2711.js
 dist/app-0103364119015b97e56c.js
 dist/elixir-d678dad126d82ddc061f.css
 dist/html/fonts/icomoon.eot
 dist/html/fonts/icomoon.svg
 dist/html/fonts/icomoon.ttf
 dist/html/fonts/icomoon.woff
-dist/sidebar_items-70f8e4b1bd.js
+dist/sidebar_items-bbc93f5868.js
 api-reference.html
 readme.html
 assets/logo.png
@@ -15,8 +15,8 @@ Concoction.html
 Concoction.API.Gateway.html
 Concoction.Gateway.Connection.html
 Concoction.Gateway.Handler.html
-Concoction.Gateway.Heartbeater.html
 Concoction.Gateway.Payload.html
+Concoction.Gateway.Supervisor.html
 Concoction.HTTP.html
 Concoction.Supervisor.html
 Concoction.Utils.html
