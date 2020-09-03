@@ -11,8 +11,8 @@ defmodule Concoction.Supervisor do
   @impl true
   def init(:ok) do
     children = [
-      Concoction.Gateway.Handler,
-      Concoction.Gateway.Connection
+      {Mutex, name: Concoction.Mutex},
+      Concoction.Gateway.Supervisor
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
