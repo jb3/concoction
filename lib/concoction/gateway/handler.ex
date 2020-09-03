@@ -8,15 +8,16 @@ defmodule Concoction.Gateway.Handler do
 
   alias Concoction.Gateway.Payload
 
-  def start_link(state) do
+  @spec start_link(list(integer())) :: :ignore | {:error, any} | {:ok, pid}
+  def start_link(shard_info) do
     Logger.debug("Starting Gateway Handler")
-    GenServer.start_link(__MODULE__, state, name: __MODULE__)
+    GenServer.start_link(__MODULE__, shard_info)
   end
 
   @impl GenServer
-  @spec init(any) :: {:ok, any}
-  def init(state) do
-    {:ok, state}
+  @spec init(list(integer)) :: {:ok, {list(integer), integer() | nil, integer() | nil}}
+  def init(shard_info) do
+    {:ok, {shard_info, nil, nil}}
   end
 
   @impl GenServer
@@ -25,33 +26,62 @@ defmodule Concoction.Gateway.Handler do
 
     Logger.debug("Handling incoming event with opcode #{payload.op}")
 
-    if payload.s do
-      GenServer.cast(Concoction.Gateway.Heartbeater, {:new_sequence, payload.s})
+    state = if payload.s do
+      {elem(state, 0), elem(state, 1), payload.s}
+    else
+      state
     end
 
-    handle_event(payload)
+    handle_event(payload, state)
+  end
+
+  @impl GenServer
+  def handle_call(:heartbeat, _from, state = {shard_info, heartbeat_interval, last_s}) do
+    heartbeat = %Payload{
+      op: 1,
+      d: last_s
+    }
+
+    GenServer.cast(get_connection(shard_info), {:send, heartbeat})
+
+    parent = self()
+
+    spawn fn ->
+      Process.sleep(heartbeat_interval)
+      GenServer.call(parent, :heartbeat)
+    end
 
     {:noreply, state}
   end
 
-  @spec handle_event(Concoction.Gateway.Payload.t()) :: any()
+  defp get_shard(shard_info) do
+    Enum.at shard_info, 0
+  end
+
+  defp get_connection(shard_info) do
+    :"Concoction-shard-#{get_shard(shard_info)}"
+  end
+
+  @spec handle_event(Concoction.Gateway.Payload.t(), tuple()) :: any()
   @doc """
   Handle parsed gateway events from the Discord gateway.
   """
-  def handle_event(payload = %Payload{op: 10}) do
+  def handle_event(payload = %Payload{op: 10}, {shard_info, _, last_s}) do
     Logger.debug(
       "HELLO payload received, heartbeating every #{payload.d.heartbeat_interval} millieconds"
     )
 
-    Supervisor.start_child(
-      Concoction.Supervisor,
-      {Concoction.Gateway.Heartbeater, payload.d.heartbeat_interval}
-    )
+    parent = self()
+    spawn fn ->
+      Process.sleep(payload.d.heartbeat_interval)
+      GenServer.call(parent, :heartbeat)
+    end
 
     identify_payload = %Payload{
       op: 2,
       d: %{
         token: "Bot " <> Application.fetch_env!(:concoction, :token),
+        shard: shard_info,
         properties: %{
           "$os": :os.type() |> elem(1) |> Atom.to_string(),
           "$browser": "concoction",
@@ -60,14 +90,32 @@ defmodule Concoction.Gateway.Handler do
       }
     }
 
-    GenServer.cast(Concoction.Gateway.Connection, {:send, identify_payload})
+    lock = Mutex.await(Concoction.Mutex, :identify, :infinity)
+
+    Logger.debug("Sending IDENTIFY payload for shard #{get_shard(shard_info)}")
+
+    GenServer.cast(get_connection(shard_info), {:send, identify_payload})
+
+    Process.sleep(5100)
+
+    Logger.debug("Unlocking IDENTIFY ratelimit mutex")
+    Mutex.release(Concoction.Mutex, lock)
+
+    {:noreply, {shard_info, payload.d.heartbeat_interval, last_s}}
   end
 
-  def handle_event(_payload = %Payload{op: 0, t: :READY}) do
-    Logger.debug("READY payload received")
+  def handle_event(_payload = %Payload{op: 0, t: :READY}, state = {shard_info, _, _}) do
+    Logger.debug("Shard #{get_shard(shard_info)} received READY payload")
+    {:noreply, state}
   end
 
-  def handle_event(payload) do
-    Logger.debug("Unhandled payload opcode: #{payload.op}, event type: #{payload.t}")
+  def handle_event(%Payload{op: 11}, state) do
+    # Ignore heartbeat ACK
+    {:noreply, state}
+  end
+
+  def handle_event(payload, state = {shard_info, _, _}) do
+    Logger.debug("Unhandled payload on shard ##{get_shard(shard_info)} opcode: #{payload.op}, event type: #{payload.t}")
+    {:noreply, state}
   end
 end
