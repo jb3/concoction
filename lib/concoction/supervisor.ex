@@ -12,7 +12,7 @@ defmodule Concoction.Supervisor do
   def init(:ok) do
     children = [
       {Mutex, name: Concoction.Mutex},
-      Concoction.Gateway.Supervisor
+      {Concoction.Gateway.Supervisor, name: Concoction.Gateway.Supervisor}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
