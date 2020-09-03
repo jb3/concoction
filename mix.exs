@@ -9,6 +9,11 @@ defmodule Concoction.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
+      description: "Concoction is a Discord API wrapper for Elixir.",
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/jb3/concoction"
+      },
 
       # Docs
       name: "Concoction",
