@@ -1,0 +1,16 @@
+name: Publish to hex.pm
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Publish to Hex
+        uses: erlangpack/github-action@v1
