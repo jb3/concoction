@@ -16,7 +16,7 @@ defmodule Concoction.API.Gateway do
     end
   end
 
-    @doc """
+  @doc """
   Fetch the Gateway with authentication, returning the gateway URL and shard count.
   """
   @spec get_gateway_bot() :: {:ok, String.t(), integer()} | {:error, map()}

@@ -50,23 +50,24 @@ defmodule Concoction.HTTP do
   The HTTP method used to make the request.
   """
   @type method ::
-    :get
-    | :post
-    | :put
-    | :patch
-    | :delete
+          :get
+          | :post
+          | :put
+          | :patch
+          | :delete
 
   @spec process_response(String.t(), Tesla.Env.t()) :: {:ok | :error, map() | list() | nil}
   defp process_response(path, response) do
     code = response.status
 
-    Logger.debug "Processing #{code} response for #{path}"
+    Logger.debug("Processing #{code} response for #{path}")
 
-    status = cond do
-      code == nil -> :error
-      code in 200..399 -> :ok
-      code in 400..599 -> :error
-    end
+    status =
+      cond do
+        code == nil -> :error
+        code in 200..399 -> :ok
+        code in 400..599 -> :error
+      end
 
     bucket = get_bucket(path, response.opts[:path_params])
 
@@ -89,15 +90,20 @@ defmodule Concoction.HTTP do
         case elem(ratelimit, 1) do
           # Quota used
           0 ->
-            remaining = Float.ceil(elem(ratelimit, 2)) - DateTime.to_unix(DateTime.utc_now()) |> trunc
+            remaining =
+              (Float.ceil(elem(ratelimit, 2)) - DateTime.to_unix(DateTime.utc_now())) |> trunc
+
             cond do
               remaining <= 0 -> 0
               true -> remaining * 1000
             end
+
           _quota_left ->
             0
         end
-      [] -> 0
+
+      [] ->
+        0
     end
   end
 
@@ -123,18 +129,24 @@ defmodule Concoction.HTTP do
       ]
     ]
 
-    opts = if method == :get do
-      Keyword.put opts, :query, data
-    else
-      Keyword.put opts, :body, data
-    end
+    opts =
+      if method == :get do
+        Keyword.put(opts, :query, data)
+      else
+        Keyword.put(opts, :body, data)
+      end
 
     case ratelimit_remaining(path, params) do
-      0 -> {:ok, resp} = Tesla.request(construct_client(), opts)
+      0 ->
+        {:ok, resp} = Tesla.request(construct_client(), opts)
 
-            process_response(path, resp)
+        process_response(path, resp)
+
       time ->
-        Logger.debug "Ratelimited on bucket #{get_bucket(path, params)}, trying again in #{time / 1000} seconds"
+        Logger.debug(
+          "Ratelimited on bucket #{get_bucket(path, params)}, trying again in #{time / 1000} seconds"
+        )
+
         Process.sleep(time)
         request(method, path, data, params)
     end

@@ -36,7 +36,10 @@ defmodule Concoction.Gateway.Handler do
   Handle parsed gateway events from the Discord gateway.
   """
   def handle_event(payload = %Payload{op: 10}) do
-    Logger.debug("HELLO payload received, heartbeating every #{payload.d.heartbeat_interval} millieconds")
+    Logger.debug(
+      "HELLO payload received, heartbeating every #{payload.d.heartbeat_interval} millieconds"
+    )
+
     Supervisor.start_child(
       Concoction.Supervisor,
       {Concoction.Gateway.Heartbeater, payload.d.heartbeat_interval}
@@ -47,7 +50,7 @@ defmodule Concoction.Gateway.Handler do
       d: %{
         token: "Bot " <> Application.fetch_env!(:concoction, :token),
         properties: %{
-          "$os": :os.type |> elem(1) |> Atom.to_string,
+          "$os": :os.type() |> elem(1) |> Atom.to_string(),
           "$browser": "concoction",
           "$device": "concoction"
         }
@@ -60,10 +63,10 @@ defmodule Concoction.Gateway.Handler do
   def handle_event(payload = %Payload{op: 0, t: :READY}) do
     Logger.debug("READY payload received")
 
-    IO.inspect payload.d
+    IO.inspect(payload.d)
   end
 
   def handle_event(payload) do
-    Logger.debug "Unhandled payload opcode: #{payload.op}, event type: #{payload.t}"
+    Logger.debug("Unhandled payload opcode: #{payload.op}, event type: #{payload.t}")
   end
 end

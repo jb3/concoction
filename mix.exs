@@ -38,7 +38,8 @@ defmodule Concoction.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:jason, ">= 1.0.0"},
       {:gun, "~> 1.3.0"},
-      {:idna, "~> 6.0"}
+      {:idna, "~> 6.0"},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 end

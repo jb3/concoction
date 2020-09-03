@@ -10,32 +10,34 @@ defmodule Concoction.Gateway.Heartbeater do
   """
   @spec start_link(integer()) :: :ignore | {:error, any} | {:ok, pid}
   def start_link(heartbeat_interval) do
-    Logger.debug "Heartbeater starting"
+    Logger.debug("Heartbeater starting")
     GenServer.start_link(__MODULE__, heartbeat_interval, name: __MODULE__)
   end
 
   @impl GenServer
   @spec init({integer(), pid()}) :: {:ok, {integer(), integer()}}
   def init(heartbeat_interval) do
-    Logger.debug "Scheduling first heartbeat"
+    Logger.debug("Scheduling first heartbeat")
     parent = self()
-    spawn fn ->
+
+    spawn(fn ->
       Process.sleep(heartbeat_interval)
       GenServer.cast(parent, :heartbeat)
-    end
+    end)
 
     {:ok, {heartbeat_interval, 0}}
   end
 
   @impl GenServer
   def handle_cast({:new_sequence, new_seq}, {heartbeat_interval, _old_seq}) do
-    Logger.debug "Updating new sequence number: #{new_seq}"
+    Logger.debug("Updating new sequence number: #{new_seq}")
     {:noreply, {heartbeat_interval, new_seq}}
   end
 
   @impl GenServer
   def handle_cast(:heartbeat, state = {heartbeat_interval, last_sequence}) do
     Logger.debug("Preparing heartbeat payload")
+
     payload = %Payload{
       op: 1,
       d: last_sequence
@@ -47,10 +49,10 @@ defmodule Concoction.Gateway.Heartbeater do
 
     parent = self()
 
-    spawn fn ->
+    spawn(fn ->
       Process.sleep(heartbeat_interval)
       GenServer.cast(parent, :heartbeat)
-    end
+    end)
 
     {:noreply, state}
   end
