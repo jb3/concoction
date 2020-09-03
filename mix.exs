@@ -13,7 +13,7 @@ defmodule Concoction.MixProject do
       # Docs
       name: "Concoction",
       source_url: "https://github.com/jb3/concoction",
-      homepage_url: "https://concoction.seph.club/",
+      homepage_url: "https://github.com/jb3/concoction",
       docs: [
         main: "Concoction",
         logo: "logo.png",
