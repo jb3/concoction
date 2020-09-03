@@ -1,5 +1,13 @@
 defmodule Concoction.Gateway.Supervisor do
+  @moduledoc """
+  Supervisor to manage the shards responsible for communicating with the Discord gateway.
+
+  Shards are added when the supervisor starts by fetching the estimated shard count from Discord.
+  """
+
   use Supervisor
+
+  alias Concoction.API.Gateway
 
   def start_link(opts) do
     Supervisor.start_link(__MODULE__, :ok, opts)
@@ -7,7 +15,7 @@ defmodule Concoction.Gateway.Supervisor do
 
   @impl true
   def init(:ok) do
-    {:ok, websocket_url, shard_count} = Concoction.API.Gateway.get_gateway_bot()
+    {:ok, websocket_url, shard_count} = Gateway.get_gateway_bot()
 
     children =
       Enum.map(1..shard_count, fn shard_id ->
