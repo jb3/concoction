@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Concoction support server
+    url: https://discord.gg/F6SYMSu
+    about: Join our Discord community if you need help with the library or want to discuss implementation.
