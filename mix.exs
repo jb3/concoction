@@ -10,10 +10,7 @@ defmodule Concoction.MixProject do
       deps: deps(),
       aliases: aliases(),
       description: "Concoction is a Discord API wrapper for Elixir.",
-      licenses: ["MIT"],
-      links: %{
-        "GitHub" => "https://github.com/jb3/concoction"
-      },
+      package: package(),
 
       # Docs
       name: "Concoction",
@@ -24,6 +21,15 @@ defmodule Concoction.MixProject do
         logo: "logo.png",
         extras: ["README.md"]
       ]
+    ]
+  end
+
+  defp package do
+    [
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/jb3/concoction"
+      }
     ]
   end
 
