@@ -8,6 +8,7 @@ defmodule Concoction.MixProject do
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      aliases: aliases(),
 
       # Docs
       name: "Concoction",
@@ -18,6 +19,12 @@ defmodule Concoction.MixProject do
         logo: "logo.png",
         extras: ["README.md"]
       ]
+    ]
+  end
+
+  defp aliases do
+    [
+      test: "test --no-start" #(2)
     ]
   end
 
