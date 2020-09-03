@@ -25,7 +25,7 @@ defmodule Concoction.Gateway.Connection do
   def init({websocket_url, [shard_id, shard_count]}) do
     uri = URI.parse(websocket_url)
 
-    Logger.debug("Starting connection to Gateway")
+    Logger.debug("Starting connection to Gateway on shard #{shard_id}")
 
     {:ok, conn_pid} = :gun.open(uri.host |> String.to_charlist(), 443, %{protocols: [:http]})
     {:ok, _protocol} = :gun.await_up(conn_pid)
