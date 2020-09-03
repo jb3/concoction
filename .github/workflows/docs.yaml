@@ -1,9 +1,9 @@
-name: Publish documentation to GitHub pages
+name: Documentation publish
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
