@@ -63,7 +63,7 @@ defmodule Concoction.Gateway.Handler do
     GenServer.cast(Concoction.Gateway.Connection, {:send, identify_payload})
   end
 
-  def handle_event(payload = %Payload{op: 0, t: :READY}) do
+  def handle_event(_payload = %Payload{op: 0, t: :READY}) do
     Logger.debug("READY payload received")
   end
 
