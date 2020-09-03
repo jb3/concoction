@@ -63,7 +63,10 @@ defmodule Concoction.Gateway.Connection do
   end
 
   @impl GenServer
-  def handle_info({:gun_down, _conn, _proto, _reason, _killed_streams, _unprocessed_streams}, state) do
+  def handle_info(
+        {:gun_down, _conn, _proto, _reason, _killed_streams, _unprocessed_streams},
+        state
+      ) do
     Logger.debug("Gun gateway down")
     {:noreply, state}
   end

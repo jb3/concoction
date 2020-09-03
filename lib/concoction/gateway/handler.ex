@@ -26,11 +26,12 @@ defmodule Concoction.Gateway.Handler do
 
     Logger.debug("Handling incoming event with opcode #{payload.op}")
 
-    state = if payload.s do
-      {elem(state, 0), elem(state, 1), payload.s}
-    else
-      state
-    end
+    state =
+      if payload.s do
+        {elem(state, 0), elem(state, 1), payload.s}
+      else
+        state
+      end
 
     handle_event(payload, state)
   end
@@ -46,16 +47,16 @@ defmodule Concoction.Gateway.Handler do
 
     parent = self()
 
-    spawn fn ->
+    spawn(fn ->
       Process.sleep(heartbeat_interval)
       GenServer.call(parent, :heartbeat)
-    end
+    end)
 
     {:noreply, state}
   end
 
   defp get_shard(shard_info) do
-    Enum.at shard_info, 0
+    Enum.at(shard_info, 0)
   end
 
   defp get_connection(shard_info) do
@@ -72,10 +73,11 @@ defmodule Concoction.Gateway.Handler do
     )
 
     parent = self()
-    spawn fn ->
+
+    spawn(fn ->
       Process.sleep(payload.d.heartbeat_interval)
       GenServer.call(parent, :heartbeat)
-    end
+    end)
 
     identify_payload = %Payload{
       op: 2,
@@ -115,7 +117,12 @@ defmodule Concoction.Gateway.Handler do
   end
 
   def handle_event(payload, state = {shard_info, _, _}) do
-    Logger.debug("Unhandled payload on shard ##{get_shard(shard_info)} opcode: #{payload.op}, event type: #{payload.t}")
+    Logger.debug(
+      "Unhandled payload on shard ##{get_shard(shard_info)} opcode: #{payload.op}, event type: #{
+        payload.t
+      }"
+    )
+
     {:noreply, state}
   end
 end
