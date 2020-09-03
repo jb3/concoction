@@ -27,7 +27,7 @@ defmodule Concoction.HTTP do
   end
 
   @spec maybe_int?(String.t()) :: integer() | nil
-  def maybe_int?(integer) do
+  defp maybe_int?(integer) do
     if integer == nil do
       nil
     else
@@ -37,7 +37,7 @@ defmodule Concoction.HTTP do
   end
 
   @spec maybe_float?(String.t()) :: float() | nil
-  def maybe_float?(float) do
+  defp maybe_float?(float) do
     if float == nil do
       nil
     else
